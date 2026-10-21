@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pesquisa de Cultura | Selmi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar"><div class="brand"><span class="brand-mark">S</span><div><strong>Pesquisa de Cultura</strong><small>Qualidade e Segurança de Alimentos</small></div></div><a href="?admin=1" class="admin-link">Área administrativa</a></header>
+<main class="container">
+<section id="surveyView">
+<div class="hero"><span class="eyebrow">PESQUISA INTERNA</span><h1>Sua opinião importa.</h1><p>Responda com sinceridade. As respostas serão consolidadas para entender oportunidades de melhoria na cultura de qualidade e segurança de alimentos.</p><div class="privacy-note">🔒 As respostas serão usadas para análise consolidada. Evite inserir informações pessoais nos campos abertos.</div></div>
+<form id="surveyForm">
+<div class="section-heading"><div><span class="step">01</span><h2>Sobre você</h2></div><p>Informações para analisar os resultados por perfil e área.</p></div>
+<div class="question-card">
+<label for="name">1. Nome <span class="optional"></span></label><p class="hint">Você pode se identificar apenas com o primeiro nome, para que possamos controlar quem já respondeu. Seu nome não será divulgado no relatório.</p><input id="name" name="name" maxlength="80" placeholder="Seu primeiro nome">
+</div>
+<div class="question-card">
+<label for="area">2. Área em que trabalha? <span class="required">*</span></label>
+<select id="area" name="area" required><option value="">Selecione sua área</option><option>Massas</option><option>Estoque/Logística</option><option>Manutenção Massas</option><option>Manutenção Moinho</option><option>Moinho</option><option>CQ</option><option>Área Adm (RH, Comercial, Jurídico etc.)</option><option>Outros</option></select>
+</div>
+<div class="question-card">
+<label for="cargo">3. Cargo <span class="required">*</span></label>
+<select id="cargo" name="cargo" required><option value="">Selecione seu cargo</option><option>Gerente, Coordenador, Alta Direção</option><option>Administrativo</option><option>Operador, Auxiliar, Ajudante, Analista/ Inspetor, Trainee, Mecânico</option><option>Supervisor, Encarregado, Líder</option><option>Outros</option></select>
+</div>
+<div class="question-card"><label for="idade">4. Idade <span class="required">*</span></label><select id="idade" name="idade" required><option value="">Selecione sua faixa etária</option><option>18 a 30 anos</option><option>30 a 45 anos</option><option>46 a 60 anos</option><option>mais que 60 anos</option></select></div>
+<div class="question-card"><label for="tempo">5. Tempo de trabalho na Selmi <span class="required">*</span></label><select id="tempo" name="tempo" required><option value="">Selecione seu tempo de empresa</option><option>Menos que 1 ano</option><option>1 a 5 anos</option><option>6 a 10 anos</option><option>11 a 15 anos</option><option>mais do que 16 anos</option></select></div>
+<div class="section-heading"><div><span class="step">02</span><h2>Qualidade e Segurança de Alimentos</h2></div><p>Escolha uma resposta para cada afirmação.</p></div>
+<div id="questions"></div>
+<div class="submit-panel"><div><strong id="progressText">0 de 25 afirmações respondidas</strong><div class="progress"><span id="progressBar"></span></div><small>Confira suas respostas antes de enviar.</small></div><button type="submit" id="submitBtn">Enviar pesquisa <span>→</span></button></div>
+<p id="formMessage" class="message" role="status"></p>
+</form>
+</section>
+<section id="adminView" hidden>
+<div class="hero admin-hero"><span class="eyebrow">ACESSO RESTRITO</span><h1>Painel de resultados</h1><p>Consulte os resultados consolidados e gere o relatório PDF quando a pesquisa estiver encerrada.</p></div>
+<div id="loginCard" class="question-card login-card"><h2>Entrar como administrador</h2><p class="hint">Use a conta administrativa previamente cadastrada no Supabase.</p><form id="loginForm"><label for="email">E-mail</label><input id="email" type="email" required autocomplete="username"><label for="password">Senha</label><input id="password" type="password" required autocomplete="current-password"><button class="primary" type="submit">Entrar</button><p id="loginMessage" class="message"></p></form></div>
+<div id="dashboard" hidden>
+<div class="dashboard-toolbar"><div><span class="eyebrow">VISÃO GERAL</span><h2>Resultados da pesquisa</h2></div><div class="toolbar-actions"><button id="refreshBtn" class="secondary">Atualizar</button><button id="pdfBtn" class="primary">Gerar relatório PDF</button><button id="logoutBtn" class="secondary">Sair</button></div></div>
+<div class="stats-grid"><article class="stat-card"><small>Respostas recebidas</small><strong id="totalResponses">0</strong></article><article class="stat-card"><small>Áreas representadas</small><strong id="totalAreas">0</strong></article><article class="stat-card"><small>Afirmações avaliadas</small><strong>25</strong></article></div>
+<div class="filters"><label>Filtrar por área<select id="areaFilter"><option value="">Todas as áreas</option></select></label><label>Pesquisa<select id="surveyStatus"><option value="all">Todas as respostas</option></select></label></div>
+<div id="charts" class="charts-grid"></div>
+<div class="question-card"><h3>Participação por área</h3><div id="areaSummary"></div></div>
+<p id="dashboardMessage" class="message"></p>
+</div>
+</section>
+</main>
+<footer>Pesquisa de Cultura Organizacional · Qualidade e Segurança de Alimentos</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js"></script>
+<script src="app.js"></script>
+</body></html>

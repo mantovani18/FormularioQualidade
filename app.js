@@ -28,7 +28,21 @@ $("#surveyForm").addEventListener("submit",async e=>{
  const {error}=await db.from("survey_responses").insert(payload);
  btn.disabled=false;btn.innerHTML='Enviar pesquisa <span>→</span>';
  if(error){console.error(error);setMessage(msg,"Não foi possível registrar sua resposta. Confira a conexão e tente novamente. Se persistir, avise o responsável pela pesquisa.","error");}
- else{e.currentTarget.hidden=true;setMessage(msg,"Resposta enviada com sucesso. Obrigado por participar!","success");msg.scrollIntoView({behavior:"smooth",block:"center"});}
+else {
+  document.querySelector("#surveyView").innerHTML = `
+    <section class="success-screen" role="status" aria-live="polite">
+      <div class="success-icon">✓</div>
+      <h1>Formulário enviado com sucesso!</h1>
+      <p>
+        Obrigado por participar da pesquisa.
+        Sua resposta foi registrada.
+      </p>
+      <small>Você já pode fechar esta página.</small>
+    </section>
+  `;
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
 });
 $("#loginForm").addEventListener("submit",async e=>{
  e.preventDefault();if(!db){setMessage($("#loginMessage"),"Configure o Supabase no arquivo app.js.","error");return;}
